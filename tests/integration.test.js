@@ -1,6 +1,6 @@
 const request = require('supertest');
-const app = require('../src/app'); // Assuming app.js will be created by Dev2
-const datasetService = require('../src/services/datasetService');
+const app = require('../antihoax-backend/src/app'); // Corrected path to backend app
+const datasetService = require('../antihoax-backend/src/services/datasetService');
 
 describe('Integration Tests', () => {
   const testCases = datasetService.getTestCases();

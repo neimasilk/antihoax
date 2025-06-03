@@ -1,1 +1,74 @@
-/* App.css can be initially empty or with default create-react-app styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom colors for AntiHoax theme */
+:root {
+  --hoax-red: #dc2626;
+  --fact-green: #059669;
+  --neutral-yellow: #d97706;
+  --primary-blue: #2563eb;
+  --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Custom component styles */
+.gradient-bg {
+  background: var(--bg-gradient);
+}
+
+.hoax-indicator {
+  background-color: rgba(220, 38, 38, 0.1);
+  border-color: var(--hoax-red);
+  color: var(--hoax-red);
+}
+
+.fact-indicator {
+  background-color: rgba(5, 150, 105, 0.1);
+  border-color: var(--fact-green);
+  color: var(--fact-green);
+}
+
+.uncertain-indicator {
+  background-color: rgba(217, 119, 6, 0.1);
+  border-color: var(--neutral-yellow);
+  color: var(--neutral-yellow);
+}
+
+/* Enhanced button styles */
+.btn-primary {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300;
+}
+
+.btn-primary:disabled {
+  @apply opacity-50 cursor-not-allowed transform-none;
+}
+
+/* Card animations */
+.card-enter {
+  animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading animation enhancement */
+.pulse-glow {
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.8);
+  }
+}

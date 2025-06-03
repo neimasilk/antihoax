@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../src/app'); // Assuming app.js will be created by Dev2
+const app = require('../antihoax-backend/src/app'); // Corrected path to backend app
 
 describe('Performance Tests', () => {
   // Test for response time

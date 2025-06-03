@@ -1,39 +1,48 @@
-/**
- * LoadingSpinner Component
- *
- * Displays a loading indicator.
- *
- * @param {string} [text=null] - Message to display below the spinner.
- * @param {string} [size="md"] - Size of the spinner (sm, md, lg).
- * @param {string} [color="text-blue-600"] - Tailwind CSS color class for the spinner.
- */
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const LoadingSpinner = ({ size = 'md', text = null, color = 'text-blue-600' }) => {
+const LoadingSpinner = ({ size = 'md', text = 'Menganalisis berita...', color = 'blue' }) => {
   const sizeClasses = {
-    sm: 'w-6 h-6 border-2',
-    md: 'w-10 h-10 border-4',
-    lg: 'w-16 h-16 border-4',
+    sm: 'w-4 h-4',
+    md: 'w-8 h-8',
+    lg: 'w-12 h-12',
+    xl: 'w-16 h-16'
+  };
+
+  const colorClasses = {
+    blue: 'border-blue-500',
+    green: 'border-green-500',
+    red: 'border-red-500',
+    gray: 'border-gray-500',
+    primary: 'border-primary-500'
   };
 
   return (
-    <div className="flex flex-col items-center justify-center" aria-live="polite" aria-busy="true">
-      <div
-        className={`animate-spin rounded-full ${sizeClasses[size] || sizeClasses['md']} ${color} border-t-transparent`}
-        role="status" // Explicitly define as a status role for accessibility
-      >
-        <span className="sr-only">Loading...</span>
+    <div className="flex flex-col items-center justify-center space-y-4 p-6">
+      {/* Main spinner */}
+      <div className="relative">
+        <div
+          className={`${sizeClasses[size]} ${colorClasses[color]} border-4 border-t-transparent rounded-full animate-spin`}
+        ></div>
+        {/* Inner pulse effect */}
+        <div
+          className={`absolute inset-0 ${sizeClasses[size]} border-2 border-primary-200 rounded-full animate-ping opacity-75`}
+        ></div>
       </div>
-      {text && <p className={`mt-3 text-sm font-medium ${color === 'text-blue-600' ? 'text-gray-700' : color}`}>{text}</p>}
+      
+      {/* Loading text with typing animation */}
+      {text && (
+        <div className="text-center space-y-2">
+          <p className="text-lg font-medium text-gray-700 animate-pulse">{text}</p>
+          <div className="flex justify-center space-x-1">
+            <div className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
+            <div className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
+            <div className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
+          </div>
+          <p className="text-sm text-gray-500">AI sedang memproses konten...</p>
+        </div>
+      )}
     </div>
   );
-};
-
-LoadingSpinner.propTypes = {
-  size: PropTypes.oneOf(['sm', 'md', 'lg']),
-  text: PropTypes.string,
-  color: PropTypes.string, // e.g., 'text-red-500'
 };
 
 export default LoadingSpinner;

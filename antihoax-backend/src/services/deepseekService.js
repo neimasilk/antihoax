@@ -1,5 +1,5 @@
 // antihoax-backend/src/services/deepseekService.js
-const axios_DEEPSEEK_API_KEY_PLACEHOLDER = require('axios'); // Renamed to avoid collision if axios is not installed
+const axios = require('axios');
 const dotenv = require('dotenv');
 
 dotenv.config(); // Load environment variables
@@ -10,7 +10,7 @@ class DeepSeekService {
     if (!this.apiKey) {
       console.warn("DEEPSEEK_API_KEY not found in .env. DeepSeekService will not work.");
     }
-    this.client = axios_DEEPSEEK_API_KEY_PLACEHOLDER.create({
+    this.client = axios.create({
       baseURL: 'https://api.deepseek.com/v1',
       headers: {
         'Authorization': `Bearer ${this.apiKey}`,

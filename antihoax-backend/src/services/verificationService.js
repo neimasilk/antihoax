@@ -1,5 +1,6 @@
 // antihoax-backend/src/services/verificationService.js
 const deepseekService = require('./deepseekService');
+const fallbackService = require('./fallbackService');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -29,7 +30,9 @@ class VerificationService {
         analysisResult = this.createFallbackResponse(
           `DeepSeek analysis failed: ${error.message}`,
           500,
-          "AI Provider Error"
+          "AI Provider Error",
+          null,
+          text // Pass original text for fallback analysis
         );
       }
     } else {
@@ -38,7 +41,8 @@ class VerificationService {
         "AI analysis is currently disabled by configuration.",
         200, // Not an error, but a state
         "Service Info",
-        false // is_hoax: false, as no analysis performed
+        false, // is_hoax: false, as no analysis performed
+        text // Pass original text for fallback analysis
       );
     }
 
@@ -67,9 +71,30 @@ class VerificationService {
     };
   }
 
-  createFallbackResponse(message, statusCode = 500, category = "Error", isHoax = null) {
-    // if isHoax is null, it means analysis could not determine.
-    // if false, it means analysis was skipped but implies not a hoax by default.
+  createFallbackResponse(message, statusCode = 500, category = "Error", isHoax = null, originalText = null) {
+    // If we have original text and it's not an error, try to use fallback analysis
+    if (originalText && category !== "Error" && statusCode < 400) {
+      try {
+        console.log('🔄 Using fallback analysis service');
+        const fallbackResult = fallbackService.analyzeText(originalText);
+        return {
+          provider: 'fallback',
+          is_hoax: fallbackResult.status === 'hoax',
+          confidence: fallbackResult.confidence,
+          summary: fallbackResult.explanation,
+          indicators: fallbackResult.redFlags.map(flag => flag.indicator || flag),
+          category: 'Fallback Analysis',
+          error_message: null,
+          statusCode: statusCode,
+          fallback_reasoning: fallbackResult.reasoning
+        };
+      } catch (fallbackError) {
+        console.error('Fallback service error:', fallbackError.message);
+        // Fall through to original fallback response
+      }
+    }
+    
+    // Original fallback response for errors or when fallback service fails
     return {
       provider: 'fallback',
       is_hoax: isHoax,
@@ -78,7 +103,7 @@ class VerificationService {
       indicators: [message],
       category: category,
       error_message: category === "Error" ? message : null,
-      statusCode: statusCode // For internal use or logging, not typically part of final API response structure for data
+      statusCode: statusCode
     };
   }
 

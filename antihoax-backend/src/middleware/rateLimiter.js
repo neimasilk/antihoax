@@ -1,5 +1,5 @@
 // antihoax-backend/src/middleware/rateLimiter.js
-const rateLimit_EXPRESS_RATE_LIMIT_PLACEHOLDER = require('express-rate-limit'); // Renamed due to potential install failure
+const rateLimit = require('express-rate-limit');
 
 // Default windowMs to 15 minutes, max to 100 requests per IP
 const defaultWindowMs = 15 * 60 * 1000; // 15 minutes
@@ -10,7 +10,7 @@ const verificationWindowMs = 10 * 60 * 1000; // 10 minutes
 const verificationMaxRequests = 20; // Lower max requests for verification
 
 // General API limiter - applies to all /api routes if used at app level
-const globalApiLimiter = rateLimit_EXPRESS_RATE_LIMIT_PLACEHOLDER({
+const globalApiLimiter = rateLimit({
   windowMs: defaultWindowMs,
   max: defaultMaxRequests,
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
@@ -23,7 +23,7 @@ const globalApiLimiter = rateLimit_EXPRESS_RATE_LIMIT_PLACEHOLDER({
 });
 
 // Stricter limiter for verification endpoints
-const verificationLimiter = rateLimit_EXPRESS_RATE_LIMIT_PLACEHOLDER({
+const verificationLimiter = rateLimit({
   windowMs: verificationWindowMs,
   max: verificationMaxRequests,
   standardHeaders: true,
@@ -37,7 +37,7 @@ const verificationLimiter = rateLimit_EXPRESS_RATE_LIMIT_PLACEHOLDER({
 });
 
 // Limiter for authentication routes (if you add them later)
-const authLimiter = rateLimit_EXPRESS_RATE_LIMIT_PLACEHOLDER({
+const authLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 5, // Max 5 attempts per hour for operations like login
   message: {

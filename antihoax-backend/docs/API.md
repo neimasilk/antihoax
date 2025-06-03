@@ -1,167 +1,272 @@
 # AntiHoax API Documentation
 
-This document provides details about the API endpoints available in the AntiHoax Backend service.
-
-**Base URL:** `/api` (e.g., `http://localhost:3001/api`)
+## Base URL
+```
+http://localhost:3000/api
+```
 
 ## Authentication
+Tidak ada autentikasi yang diperlukan untuk MVP ini.
 
-Currently, the API does not require authentication for most endpoints. Rate limiting is applied to protect against abuse. Future versions may introduce API key requirements for higher usage tiers or specific sensitive operations.
+## Rate Limiting
+- **Window**: 15 menit (900000 ms)
+- **Max Requests**: 100 requests per window per IP
+- **Headers**: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
 
-## Common Response Object
+## Endpoints
 
-Successful responses (200 OK) are generally structured as follows:
+### Health Check
 
+#### GET /health
+Memeriksa status kesehatan API server.
+
+**Response:**
+```json
+{
+  "status": "OK",
+  "timestamp": "2025-01-27T10:30:00.000Z",
+  "uptime": 3600.123,
+  "environment": "development"
+}
+```
+
+**Status Codes:**
+- `200 OK`: Server berjalan normal
+- `500 Internal Server Error`: Server mengalami masalah
+
+---
+
+### News Verification
+
+#### POST /verify
+Menganalisis teks berita untuk mendeteksi potensi hoax atau misinformasi.
+
+**Request Body:**
+```json
+{
+  "text": "Teks berita yang akan diverifikasi",
+  "type": "text",
+  "source": "web-interface"
+}
+```
+
+**Parameters:**
+- `text` (string, required): Teks berita yang akan dianalisis (min: 10 karakter, max: 10000 karakter)
+- `type` (string, optional): Jenis input, default "text"
+- `source` (string, optional): Sumber request, default "unknown"
+
+**Response (Success):**
 ```json
 {
   "success": true,
   "data": {
-    // Endpoint-specific data payload
+    "result": "hoaks",
+    "confidence": 0.85,
+    "explanation": "Teks mengandung beberapa indikator hoax seperti...",
+    "analysis_method": "deepseek_ai",
+    "similar_news": [
+      {
+        "title": "Berita serupa yang ditemukan",
+        "similarity": 0.75,
+        "label": "hoaks"
+      }
+    ]
   },
-  "timestamp": "YYYY-MM-DDTHH:mm:ss.sssZ"
+  "timestamp": "2025-01-27T10:30:00.000Z",
+  "processing_time_ms": 1250
 }
 ```
 
-Error responses (4xx, 5xx) are structured as:
+**Response (Fallback):**
+```json
+{
+  "success": true,
+  "data": {
+    "result": "perlu_verifikasi",
+    "confidence": 0.60,
+    "explanation": "Analisis berbasis aturan mendeteksi beberapa indikator...",
+    "analysis_method": "fallback_rules",
+    "detected_indicators": {
+      "hoax_indicators": ["kata sensasional", "klaim tanpa sumber"],
+      "fact_indicators": ["sumber resmi"]
+    }
+  },
+  "timestamp": "2025-01-27T10:30:00.000Z",
+  "processing_time_ms": 150
+}
+```
 
+**Possible Results:**
+- `hoaks`: Terindikasi sebagai hoax/misinformasi
+- `fakta`: Terindikasi sebagai berita faktual
+- `perlu_verifikasi`: Memerlukan verifikasi lebih lanjut
+
+**Error Response:**
 ```json
 {
   "success": false,
   "error": {
-    "message": "A descriptive error message",
-    "status": HTTP_STATUS_CODE,
-    "details": "Optional: Further details or validation errors array"
+    "code": "VALIDATION_ERROR",
+    "message": "Teks terlalu pendek. Minimal 10 karakter.",
+    "details": {
+      "field": "text",
+      "received_length": 5,
+      "min_length": 10
+    }
   },
-  "timestamp": "YYYY-MM-DDTHH:mm:ss.sssZ"
+  "timestamp": "2025-01-27T10:30:00.000Z"
 }
 ```
-*Note: The exact error structure for validation (400) from `express-validator` might be slightly different, containing an `errors` array.*
 
-## Endpoints
-
-### 1. Health Check
-
-*   **Endpoint:** `GET /health`
-*   **Description:** Checks the operational status of the API.
-*   **Request Body:** None
-*   **Successful Response (200 OK):**
-    ```json
-    {
-      "status": "UP",
-      "GREETINGS": "Hello from anit-hoax API an its /api/health route",
-      "timestamp": "2023-10-27T10:00:00.000Z"
-    }
-    ```
-    *(Self-correction: The `baby-step-dev2.md` Phase 1 `src/app.js` defines `status: 'UP'`, but `src/routes/index.js` defines the greeting. The Jest test `tests/api.test.js` also expects `status: 'UP'` and the greeting. The manual test guide also reflects this combined expectation. The original `app.get('/api/health')` was commented out in `app.js` when `apiRoutes` were added.)*
-
-### 2. Verification Service Status
-
-*   **Endpoint:** `GET /verify/status`
-*   **Description:** Retrieves the status of the verification service and its dependencies (e.g., DeepSeek API).
-*   **Request Body:** None
-*   **Successful Response (200 OK):**
-    ```json
-    {
-        "overall_status": "operational", // or "issues_detected"
-        "timestamp": "2023-10-27T12:00:00.000Z",
-        "dependencies": [
-            {
-                "name": "DeepSeek API",
-                "configured": true,
-                "enabled": true,
-                "status": "ok", // or "error"
-                "message": "DeepSeek API is responsive" // or an error message
-            }
-            // Potentially other dependencies in the future
-        ]
-    }
-    ```
-
-### 3. Submit Text for Verification
-
-*   **Endpoint:** `POST /verify`
-*   **Description:** Submits text content for hoax analysis. The analysis is performed by the configured AI provider (e.g., DeepSeek).
-*   **Request Headers:**
-    *   `Content-Type: application/json`
-*   **Request Body:**
-    ```json
-    {
-      "text": "The content of the news article or text to be analyzed. Must be at least 10 characters.",
-      "type": "text", // Optional, defaults to "text". Could be "url" in future.
-      "source": "Optional URL or identifier for the source of the text."
-    }
-    ```
-*   **Successful Response (200 OK):**
-    ```json
-    // Example when DeepSeek analysis is successful
-    {
-      "success": true,
-      "data": {
-        "provider": "deepseek",
-        "is_hoax": false, // boolean: true if likely a hoax, false otherwise, null if error
-        "confidence": 0.95, // float: confidence score (0.0 to 1.0)
-        "summary": "The text appears to be factual based on current analysis.",
-        "indicators": ["Credible source mentioned (if applicable)", "Neutral language"], // array of strings
-        "category": "Reliable News", // e.g., "Misinformation", "Disinformation", "Satire", "Reliable News"
-        "error_message": null, // string: error message if any during AI processing
-        "raw_ai_response": null // (Optional, only in development NODE_ENV for debugging) The raw JSON string from AI provider
-      },
-      "timestamp": "2023-10-27T12:05:00.000Z"
-    }
-    ```
-    ```json
-    // Example when DeepSeek analysis is disabled or fails, and fallback is used
-    {
-      "success": true, // The API call itself succeeded
-      "data": {
-        "provider": "fallback",
-        "is_hoax": null, // Fallback cannot determine hoax status
-        "confidence": 0.0,
-        "summary": "AI analysis is currently disabled by configuration.", // Or error message if AI failed
-        "indicators": ["AI analysis not performed"],
-        "category": "Service Info", // Or "Error" if AI failed
-        "error_message": null // Or the actual error message from AI service
-      },
-      "timestamp": "2023-10-27T12:06:00.000Z"
-    }
-    ```
-*   **Error Response (400 Bad Request - Validation Error):**
-    ```json
-    {
-        "errors": [ // Array of validation errors from express-validator
-            {
-                "type": "field",
-                "value": "short",
-                "msg": "Text must be at least 10 characters long.",
-                "path": "text",
-                "location": "body"
-            }
-        ]
-    }
-    ```
-*   **Error Response (429 Too Many Requests):**
-    If rate limits are exceeded.
-    ```json
-    {
-      "status": 429, // This might be nested under an "error" object depending on actual implementation
-      "error": "Too many verification requests from this IP, please try again after 10 minutes."
-    }
-    ```
-    *(Self-correction: The `rateLimiter.js` defines the message as `{"status": 429, "error": "..."}`. The main error middleware in `app.js` might wrap this further if not handled directly by the rate limiter's response handler.)*
-
-
-## Rate Limiting
-
-*   **Verification Endpoint (`POST /verify`):** Limited to 20 requests per 10 minutes per IP.
-*   Other limits may apply globally. Check `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` response headers.
-
-## Future Enhancements (Not Yet Implemented)
-
-*   URL analysis (passing a URL instead of text).
-*   User authentication and API keys.
-*   More sophisticated caching strategies.
-*   Webhook support for asynchronous analysis of large texts or URLs.
-*   Support for more AI analysis providers.
+**Status Codes:**
+- `200 OK`: Analisis berhasil
+- `400 Bad Request`: Input tidak valid
+- `429 Too Many Requests`: Rate limit exceeded
+- `500 Internal Server Error`: Server error
+- `503 Service Unavailable`: AI service tidak tersedia
 
 ---
-*This documentation is based on the features implemented up to Phase 4 of `baby-step-dev2.md`.*
+
+### Service Status
+
+#### GET /verify/status
+Memeriksa status layanan verifikasi dan komponen-komponennya.
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "service_status": "operational",
+    "components": {
+      "deepseek_ai": {
+        "status": "operational",
+        "enabled": true,
+        "last_check": "2025-01-27T10:29:00.000Z"
+      },
+      "fallback_system": {
+        "status": "operational",
+        "enabled": true
+      },
+      "dataset_service": {
+        "status": "operational",
+        "loaded_entries": 150
+      }
+    },
+    "statistics": {
+      "total_requests_today": 1250,
+      "success_rate": 0.98,
+      "average_response_time_ms": 1800
+    }
+  },
+  "timestamp": "2025-01-27T10:30:00.000Z"
+}
+```
+
+**Status Codes:**
+- `200 OK`: Status berhasil diambil
+- `500 Internal Server Error`: Server error
+
+---
+
+## Error Codes
+
+| Code | Description |
+|------|-------------|
+| `VALIDATION_ERROR` | Input tidak memenuhi validasi |
+| `TEXT_TOO_SHORT` | Teks terlalu pendek (< 10 karakter) |
+| `TEXT_TOO_LONG` | Teks terlalu panjang (> 10000 karakter) |
+| `INVALID_TYPE` | Tipe input tidak valid |
+| `AI_SERVICE_ERROR` | Error dari layanan AI |
+| `FALLBACK_ERROR` | Error dari sistem fallback |
+| `RATE_LIMIT_EXCEEDED` | Melebihi batas rate limiting |
+| `INTERNAL_ERROR` | Error internal server |
+
+## Request Examples
+
+### cURL Examples
+
+**Health Check:**
+```bash
+curl -X GET http://localhost:3000/api/health
+```
+
+**Verify News:**
+```bash
+curl -X POST http://localhost:3000/api/verify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Pemerintah akan memberikan bantuan tunai langsung kepada seluruh rakyat Indonesia sebesar 10 juta rupiah per orang tanpa syarat apapun.",
+    "type": "text",
+    "source": "web-interface"
+  }'
+```
+
+**Service Status:**
+```bash
+curl -X GET http://localhost:3000/api/verify/status
+```
+
+### JavaScript Examples
+
+**Using Fetch API:**
+```javascript
+// Verify news
+const response = await fetch('http://localhost:3000/api/verify', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    text: 'Teks berita yang akan diverifikasi...',
+    type: 'text',
+    source: 'web-interface'
+  })
+});
+
+const result = await response.json();
+console.log(result);
+```
+
+**Using Axios:**
+```javascript
+const axios = require('axios');
+
+try {
+  const response = await axios.post('http://localhost:3000/api/verify', {
+    text: 'Teks berita yang akan diverifikasi...',
+    type: 'text',
+    source: 'web-interface'
+  });
+  
+  console.log(response.data);
+} catch (error) {
+  console.error('Error:', error.response.data);
+}
+```
+
+## Response Time Guidelines
+
+- **Target Response Time**: < 30 detik
+- **DeepSeek AI**: 15-25 detik (tergantung kompleksitas)
+- **Fallback System**: 100-500 ms
+- **Health Check**: < 100 ms
+- **Status Check**: < 200 ms
+
+## Best Practices
+
+1. **Input Validation**: Selalu validasi input di sisi client sebelum mengirim request
+2. **Error Handling**: Implementasikan proper error handling untuk semua kemungkinan response
+3. **Rate Limiting**: Respect rate limits dan implementasikan retry logic dengan exponential backoff
+4. **Timeout**: Set timeout yang reasonable (minimal 35 detik untuk /verify)
+5. **Caching**: Cache hasil untuk teks yang sama untuk mengurangi load server
+
+## Changelog
+
+### v1.0.0 (2025-01-27)
+- Initial API release
+- Basic news verification endpoint
+- Health check dan status endpoints
+- Rate limiting implementation
+- DeepSeek AI integration
+- Fallback system integration

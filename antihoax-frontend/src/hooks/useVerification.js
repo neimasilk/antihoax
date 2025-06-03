@@ -41,8 +41,9 @@ const useVerification = () => {
   return {
     isLoading,
     error,
-    verificationResult,
+    result: verificationResult,
     verifyNews,
+    setError,
   };
 };
 
