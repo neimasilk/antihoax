@@ -20,12 +20,14 @@ Each step must be completed and tested thoroughly before moving to the next step
    npx create-react-app antihoax-frontend
    cd antihoax-frontend
    ```
+   *(Attempted, but `npx create-react-app` did not yield a complete/usable skeleton due to environment issues)*
 
 2. Install and configure Tailwind CSS:
    ```bash
    npm install -D tailwindcss postcss autoprefixer
    npx tailwindcss init -p
    ```
+   *(Attempted, `npm install` failed, `npx tailwindcss init -p` failed)*
 
 3. Configure `tailwind.config.js`:
    ```javascript
@@ -45,6 +47,7 @@ Each step must be completed and tested thoroughly before moving to the next step
      plugins: [],
    }
    ```
+   *(File created manually as part of aborted Phase 1 attempt in `antihoax-frontend`)*
 
 4. Update `src/index.css` with Tailwind directives:
    ```css
@@ -52,12 +55,13 @@ Each step must be completed and tested thoroughly before moving to the next step
    @tailwind components;
    @tailwind utilities;
    ```
+   *(File created manually as part of aborted Phase 1 attempt in `antihoax-frontend`)*
 
 **Validation Criteria:**
-- [ ] React app starts successfully with `npm start`
-- [ ] Tailwind CSS classes work (test with a simple colored div)
-- [ ] No console errors in browser
-- [ ] Custom colors (hoax-red, fact-green, neutral-yellow) are accessible
+- [ ] React app starts successfully with `npm start` *(Blocked by `npm install` failure)*
+- [ ] Tailwind CSS classes work (test with a simple colored div) *(Blocked by `npm install` failure)*
+- [ ] No console errors in browser *(Blocked by `npm install` failure)*
+- [ ] Custom colors (hoax-red, fact-green, neutral-yellow) are accessible *(Blocked by `npm install` failure)*
 
 **Testing:**
 ```javascript
@@ -66,6 +70,7 @@ Each step must be completed and tested thoroughly before moving to the next step
 <div className="bg-fact-green text-white p-4">Fact Green Test</div>
 <div className="bg-neutral-yellow text-white p-4">Neutral Yellow Test</div>
 ```
+*(Testing blocked)*
 
 ### Step 1.2: Create Project Structure
 
@@ -85,6 +90,7 @@ Each step must be completed and tested thoroughly before moving to the next step
    ├── services/
    └── constants/
    ```
+   `[x]` *(Directory structure created)*
 
 2. Create index files for each component folder:
    ```javascript
@@ -92,438 +98,147 @@ Each step must be completed and tested thoroughly before moving to the next step
    // src/components/forms/index.js
    // src/components/results/index.js
    ```
+   `[x]` *(Placeholder index files created)*
 
 **Validation Criteria:**
-- [ ] All folders are created correctly
-- [ ] Index files exist and can be imported without errors
-- [ ] Project structure follows React best practices
+- [x] All folders are created correctly
+- [x] Index files exist and can be imported without errors *(Files exist, import not tested)*
+- [ ] Project structure follows React best practices *(Structure created, but overall project not testable)*
 
 ## Phase 2: Core UI Components (Day 2-3)
 
 ### Step 2.1: Create Input Component
+*(Note: The component content in the original baby-step for NewsInput.jsx was different from the one implemented in subtask dev1-phase2-step2.1. The implementation from the subtask instructions was used.)*
 
 **Objective:** Build a reusable text input component for news verification
 
 **Tasks:**
 1. Create `src/components/forms/NewsInput.jsx`:
+   `[x]` *(File created with content from subtask instructions)*
    ```javascript
-   import React, { useState } from 'react';
-   
-   const NewsInput = ({ onSubmit, isLoading = false }) => {
-     const [inputText, setInputText] = useState('');
-     const [inputType, setInputType] = useState('text'); // text, url
-   
-     const handleSubmit = (e) => {
-       e.preventDefault();
-       if (inputText.trim()) {
-         onSubmit({
-           text: inputText.trim(),
-           type: inputType
-         });
-       }
-     };
-   
-     return (
-       <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto">
-         {/* Input type selector */}
-         <div className="mb-4">
-           <div className="flex space-x-4">
-             <label className="flex items-center">
-               <input
-                 type="radio"
-                 value="text"
-                 checked={inputType === 'text'}
-                 onChange={(e) => setInputType(e.target.value)}
-                 className="mr-2"
-               />
-               Teks Berita
-             </label>
-             <label className="flex items-center">
-               <input
-                 type="radio"
-                 value="url"
-                 checked={inputType === 'url'}
-                 onChange={(e) => setInputType(e.target.value)}
-                 className="mr-2"
-               />
-               URL Berita
-             </label>
-           </div>
-         </div>
-   
-         {/* Text input area */}
-         <div className="mb-4">
-           <textarea
-             value={inputText}
-             onChange={(e) => setInputText(e.target.value)}
-             placeholder={inputType === 'text' ? 
-               'Masukkan teks berita yang ingin diverifikasi...' : 
-               'Masukkan URL berita yang ingin diverifikasi...'}
-             className="w-full h-40 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-             disabled={isLoading}
-           />
-         </div>
-   
-         {/* Submit button */}
-         <div className="text-center">
-           <button
-             type="submit"
-             disabled={!inputText.trim() || isLoading}
-             className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-           >
-             {isLoading ? 'Memverifikasi...' : 'Verifikasi Berita'}
-           </button>
-         </div>
-       </form>
-     );
+   // Content from subtask dev1-phase2-step2.1 was used
+   import React from 'react';
+   import PropTypes from 'prop-types';
+
+   const NewsInput = ({ value, onChange, placeholder = "Masukkan teks berita di sini...", disabled = false }) => {
+     // ... (implementation from subtask)
    };
-   
+   // ...
    export default NewsInput;
    ```
 
 2. Create `src/components/forms/index.js`:
+   `[x]` *(File created/updated)*
    ```javascript
    export { default as NewsInput } from './NewsInput';
    ```
 
 **Validation Criteria:**
-- [ ] Component renders without errors
-- [ ] Radio buttons switch between text and URL modes
-- [ ] Placeholder text changes based on input type
-- [ ] Submit button is disabled when input is empty
-- [ ] Loading state disables input and shows loading text
-- [ ] onSubmit callback receives correct data format
+- [ ] Component renders without errors *(Not tested in running app)*
+- [ ] Radio buttons switch between text and URL modes *(Original component had this, implemented one does not)*
+- [ ] Placeholder text changes based on input type *(N/A for implemented version)*
+- [ ] Submit button is disabled when input is empty *(N/A for implemented version, uses props)*
+- [ ] Loading state disables input and shows loading text *(Implemented via `disabled` prop)*
+- [ ] onSubmit callback receives correct data format *(N/A for implemented version, uses `onChange`)*
 
 **Testing:**
-```javascript
-// Test in App.js
-import { NewsInput } from './components/forms';
-
-function App() {
-  const handleSubmit = (data) => {
-    console.log('Submitted:', data);
-  };
-
-  return (
-    <div className="p-8">
-      <NewsInput onSubmit={handleSubmit} />
-    </div>
-  );
-}
-```
+*(Testing blocked, component structure differs from original test plan)*
 
 ### Step 2.2: Create Result Display Component
+*(Note: The component content in the original baby-step for VerificationResult.jsx was different. The implementation from subtask dev1-phase2-step2.2 was used.)*
 
 **Objective:** Build a component to display verification results clearly
 
 **Tasks:**
 1. Create `src/components/results/VerificationResult.jsx`:
+   `[x]` *(File created with content from subtask instructions)*
    ```javascript
+   // Content from subtask dev1-phase2-step2.2 was used
    import React from 'react';
+   import PropTypes from 'prop-types';
    
-   const VerificationResult = ({ result }) => {
-     if (!result) return null;
-   
-     const getStatusConfig = (status) => {
-       switch (status?.toLowerCase()) {
-         case 'hoaks':
-         case 'hoax':
-           return {
-             color: 'hoax-red',
-             bgColor: 'red-50',
-             borderColor: 'red-200',
-             icon: '⚠️',
-             label: 'TERINDIKASI HOAKS'
-           };
-         case 'fakta':
-         case 'fact':
-           return {
-             color: 'fact-green',
-             bgColor: 'green-50',
-             borderColor: 'green-200',
-             icon: '✅',
-             label: 'KEMUNGKINAN FAKTA'
-           };
-         case 'meragukan':
-         case 'perlu_verifikasi':
-         default:
-           return {
-             color: 'neutral-yellow',
-             bgColor: 'yellow-50',
-             borderColor: 'yellow-200',
-             icon: '❓',
-             label: 'PERLU VERIFIKASI LEBIH LANJUT'
-           };
-       }
-     };
-   
-     const config = getStatusConfig(result.status);
-   
-     return (
-       <div className={`w-full max-w-4xl mx-auto mt-8 p-6 border-2 border-${config.borderColor} bg-${config.bgColor} rounded-lg`}>
-         {/* Status Header */}
-         <div className="flex items-center mb-4">
-           <span className="text-2xl mr-3">{config.icon}</span>
-           <h2 className={`text-xl font-bold text-${config.color}`}>
-             {config.label}
-           </h2>
-         </div>
-   
-         {/* Confidence Score */}
-         {result.confidence && (
-           <div className="mb-4">
-             <div className="flex justify-between items-center mb-2">
-               <span className="text-sm font-medium text-gray-700">Tingkat Keyakinan:</span>
-               <span className="text-sm font-bold">{Math.round(result.confidence * 100)}%</span>
-             </div>
-             <div className="w-full bg-gray-200 rounded-full h-2">
-               <div 
-                 className={`bg-${config.color} h-2 rounded-full transition-all duration-300`}
-                 style={{ width: `${result.confidence * 100}%` }}
-               ></div>
-             </div>
-           </div>
-         )}
-   
-         {/* Explanation */}
-         {result.explanation && (
-           <div className="mb-4">
-             <h3 className="font-semibold text-gray-800 mb-2">Penjelasan:</h3>
-             <p className="text-gray-700 leading-relaxed">{result.explanation}</p>
-           </div>
-         )}
-   
-         {/* Red Flags */}
-         {result.redFlags && result.redFlags.length > 0 && (
-           <div className="mb-4">
-             <h3 className="font-semibold text-gray-800 mb-2">Indikator yang Ditemukan:</h3>
-             <ul className="list-disc list-inside space-y-1">
-               {result.redFlags.map((flag, index) => (
-                 <li key={index} className="text-gray-700">{flag}</li>
-               ))}
-             </ul>
-           </div>
-         )}
-   
-         {/* Sources */}
-         {result.sources && result.sources.length > 0 && (
-           <div>
-             <h3 className="font-semibold text-gray-800 mb-2">Sumber Referensi:</h3>
-             <ul className="space-y-1">
-               {result.sources.map((source, index) => (
-                 <li key={index}>
-                   <a 
-                     href={source.url} 
-                     target="_blank" 
-                     rel="noopener noreferrer"
-                     className="text-blue-600 hover:text-blue-800 underline"
-                   >
-                     {source.title || source.url}
-                   </a>
-                 </li>
-               ))}
-             </ul>
-           </div>
-         )}
-       </div>
-     );
+   const VerificationResult = ({ result, isLoading }) => {
+     // ... (implementation from subtask)
    };
-   
+   // ...
    export default VerificationResult;
    ```
 
 2. Update `src/components/results/index.js`:
+   `[x]` *(File created/updated)*
    ```javascript
    export { default as VerificationResult } from './VerificationResult';
    ```
 
 **Validation Criteria:**
-- [ ] Component renders different styles for each status (hoaks, fakta, meragukan)
-- [ ] Confidence score displays correctly with progress bar
-- [ ] Explanation text renders properly
-- [ ] Red flags list displays when available
-- [ ] Sources links are clickable and open in new tab
-- [ ] Component handles missing data gracefully
+- [ ] Component renders different styles for each status (hoaks, fakta, meragukan) *(Not tested in running app, but logic is present)*
+- [ ] Confidence score displays correctly with progress bar *(Implemented version does not have confidence bar)*
+- [ ] Explanation text renders properly *(Not tested in running app)*
+- [ ] Red flags list displays when available *(Implemented version does not have red flags)*
+- [ ] Sources links are clickable and open in new tab *(Implemented version does not have sources)*
+- [ ] Component handles missing data gracefully *(Not tested in running app, but logic is present for null/loading)*
 
 **Testing:**
-```javascript
-// Test data for different scenarios
-const testResults = {
-  hoax: {
-    status: 'hoaks',
-    confidence: 0.85,
-    explanation: 'Berita ini mengandung klaim yang tidak didukung bukti dan menggunakan bahasa sensasional.',
-    redFlags: ['Tidak ada sumber yang kredibel', 'Bahasa sensasional', 'Klaim tidak terverifikasi'],
-    sources: []
-  },
-  fact: {
-    status: 'fakta',
-    confidence: 0.92,
-    explanation: 'Informasi ini didukung oleh sumber-sumber terpercaya dan data yang dapat diverifikasi.',
-    redFlags: [],
-    sources: [
-      { title: 'Kompas.com', url: 'https://kompas.com' },
-      { title: 'Detik.com', url: 'https://detik.com' }
-    ]
-  }
-};
-```
+*(Testing blocked, component structure differs from original test plan)*
 
 ### Step 2.3: Create Loading Component
+*(Note: The component content in the original baby-step for LoadingSpinner.jsx was different. The implementation from subtask dev1-phase2-step2.3 was used.)*
 
 **Objective:** Build a loading indicator for better user experience
 
 **Tasks:**
 1. Create `src/components/common/LoadingSpinner.jsx`:
+   `[x]` *(File created with content from subtask instructions)*
    ```javascript
+   // Content from subtask dev1-phase2-step2.3 was used
    import React from 'react';
-   
-   const LoadingSpinner = ({ message = 'Memproses...', size = 'medium' }) => {
-     const sizeClasses = {
-       small: 'w-4 h-4',
-       medium: 'w-8 h-8',
-       large: 'w-12 h-12'
-     };
-   
-     return (
-       <div className="flex flex-col items-center justify-center p-8">
-         <div className={`${sizeClasses[size]} border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin`}></div>
-         <p className="mt-4 text-gray-600 text-center">{message}</p>
-       </div>
-     );
+   import PropTypes from 'prop-types';
+
+   const LoadingSpinner = ({ size = 'md', text = null, color = 'text-blue-600' }) => {
+    // ... (implementation from subtask)
    };
-   
+   // ...
    export default LoadingSpinner;
    ```
 
 2. Update `src/components/common/index.js`:
+   `[x]` *(File created/updated)*
    ```javascript
    export { default as LoadingSpinner } from './LoadingSpinner';
    ```
 
 **Validation Criteria:**
-- [ ] Spinner animates smoothly
-- [ ] Different sizes work correctly
-- [ ] Message displays properly
-- [ ] Component is reusable across the app
+- [ ] Spinner animates smoothly *(Not tested in running app)*
+- [ ] Different sizes work correctly *(Not tested in running app, but logic for size prop is present)*
+- [ ] Message displays properly *(Not tested in running app, but logic for text prop is present)*
+- [ ] Component is reusable across the app *(Designed for reusability)*
 
 ## Phase 3: Main Page Layout (Day 4)
 
 ### Step 3.1: Create Main Application Layout
+*(Note: The component content in the original baby-step for HomePage.jsx was different. The implementation from subtask dev1-phase3-step3.1 was used.)*
 
 **Objective:** Integrate all components into a cohesive main page
 
 **Tasks:**
 1. Create `src/pages/HomePage.jsx`:
+   `[x]` *(File created with content from subtask instructions)*
    ```javascript
+   // Content from subtask dev1-phase3-step3.1 was used
    import React, { useState } from 'react';
-   import { NewsInput } from '../components/forms';
-   import { VerificationResult } from '../components/results';
-   import { LoadingSpinner } from '../components/common';
-   
+   // ... imports
    const HomePage = () => {
-     const [isLoading, setIsLoading] = useState(false);
-     const [result, setResult] = useState(null);
-     const [error, setError] = useState(null);
-   
-     const handleVerification = async (inputData) => {
-       setIsLoading(true);
-       setError(null);
-       setResult(null);
-   
-       try {
-         // TODO: Replace with actual API call when backend is ready
-         // Simulate API call for now
-         await new Promise(resolve => setTimeout(resolve, 2000));
-         
-         // Mock result for testing
-         const mockResult = {
-           status: 'meragukan',
-           confidence: 0.65,
-           explanation: 'Sistem sedang menganalisis konten ini. Hasil sementara menunjukkan perlu verifikasi lebih lanjut.',
-           redFlags: ['Konten belum diverifikasi', 'Memerlukan analisis lebih mendalam'],
-           sources: []
-         };
-         
-         setResult(mockResult);
-       } catch (err) {
-         setError('Terjadi kesalahan saat memverifikasi berita. Silakan coba lagi.');
-       } finally {
-         setIsLoading(false);
-       }
-     };
-   
-     return (
-       <div className="min-h-screen bg-gray-50">
-         {/* Header */}
-         <header className="bg-white shadow-sm border-b">
-           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-             <div className="text-center">
-               <h1 className="text-3xl font-bold text-gray-900">AntiHoax Cerdas AI</h1>
-               <p className="mt-2 text-lg text-gray-600">
-                 Verifikasi berita dengan teknologi AI untuk melawan hoaks
-               </p>
-             </div>
-           </div>
-         </header>
-   
-         {/* Main Content */}
-         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-           {/* Input Section */}
-           <section className="mb-8">
-             <NewsInput 
-               onSubmit={handleVerification} 
-               isLoading={isLoading}
-             />
-           </section>
-   
-           {/* Loading Section */}
-           {isLoading && (
-             <section>
-               <LoadingSpinner 
-                 message="Menganalisis berita dengan AI..." 
-                 size="large"
-               />
-             </section>
-           )}
-   
-           {/* Error Section */}
-           {error && (
-             <section>
-               <div className="max-w-4xl mx-auto p-4 bg-red-50 border border-red-200 rounded-lg">
-                 <p className="text-red-700">{error}</p>
-               </div>
-             </section>
-           )}
-   
-           {/* Result Section */}
-           {result && !isLoading && (
-             <section>
-               <VerificationResult result={result} />
-             </section>
-           )}
-         </main>
-   
-         {/* Footer */}
-         <footer className="bg-white border-t mt-16">
-           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-             <div className="text-center text-gray-500">
-               <p>&copy; 2024 AntiHoax Cerdas AI. Membantu melawan disinformasi.</p>
-             </div>
-           </div>
-         </footer>
-       </div>
-     );
+     // ... (implementation from subtask with simulated API call)
    };
-   
    export default HomePage;
    ```
 
 2. Update `src/App.js`:
+   `[x]` *(File created/updated)*
    ```javascript
    import React from 'react';
    import HomePage from './pages/HomePage';
-   import './App.css';
+   import './App.css'; // App.css created as empty file
    
    function App() {
      return (
@@ -537,131 +252,61 @@ const testResults = {
    ```
 
 **Validation Criteria:**
-- [ ] Page layout is responsive and looks good on desktop
-- [ ] Header displays correctly with title and description
-- [ ] Input form works and triggers loading state
-- [ ] Loading spinner shows during mock API call
-- [ ] Mock result displays correctly after loading
-- [ ] Error handling works (test by modifying code to throw error)
-- [ ] Footer displays at bottom of page
+- [ ] Page layout is responsive and looks good on desktop *(Not tested in running app)*
+- [ ] Header displays correctly with title and description *(Not tested in running app)*
+- [ ] Input form works and triggers loading state *(Not tested in running app)*
+- [ ] Loading spinner shows during mock API call *(Not tested in running app)*
+- [ ] Mock result displays correctly after loading *(Not tested in running ઉapp)*
+- [ ] Error handling works (test by modifying code to throw error) *(Not tested in running app)*
+- [ ] Footer displays at bottom of page *(Not tested in running app)*
 
 ## Phase 4: API Integration Preparation (Day 5)
 
 ### Step 4.1: Create API Service Layer
+*(Note: The component content in the original baby-step was different. The implementation from subtask dev1-phase4-step4.1 was used.)*
 
 **Objective:** Prepare service layer for backend integration
 
 **Tasks:**
 1. Create `src/services/api.js`:
+   `[x]` *(File created with content from subtask instructions)*
    ```javascript
-   const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
-   
-   class ApiService {
-     async verifyNews(inputData) {
-       try {
-         const response = await fetch(`${API_BASE_URL}/api/verify`, {
-           method: 'POST',
-           headers: {
-             'Content-Type': 'application/json',
-           },
-           body: JSON.stringify(inputData),
-         });
-   
-         if (!response.ok) {
-           throw new Error(`HTTP error! status: ${response.status}`);
-         }
-   
-         const data = await response.json();
-         return data;
-       } catch (error) {
-         console.error('API Error:', error);
-         throw new Error('Gagal menghubungi server. Silakan coba lagi.');
-       }
-     }
-   
-     // Method for health check
-     async healthCheck() {
-       try {
-         const response = await fetch(`${API_BASE_URL}/api/health`);
-         return response.ok;
-       } catch (error) {
-         return false;
-       }
-     }
-   }
-   
-   export default new ApiService();
+   // Content from subtask dev1-phase4-step4.1 (simulated API)
+   export const verifyNewsText = async (newsText) => {
+     // ... (implementation from subtask)
+   };
    ```
 
 2. Create `src/hooks/useVerification.js`:
+   `[x]` *(File created with content from subtask instructions)*
    ```javascript
+   // Content from subtask dev1-phase4-step4.1
    import { useState } from 'react';
-   import ApiService from '../services/api';
+   import { verifyNewsText } from '../services/api';
    
-   export const useVerification = () => {
-     const [isLoading, setIsLoading] = useState(false);
-     const [result, setResult] = useState(null);
-     const [error, setError] = useState(null);
-   
-     const verifyNews = async (inputData) => {
-       setIsLoading(true);
-       setError(null);
-       setResult(null);
-   
-       try {
-         const response = await ApiService.verifyNews(inputData);
-         setResult(response);
-       } catch (err) {
-         setError(err.message);
-       } finally {
-         setIsLoading(false);
-       }
-     };
-   
-     const reset = () => {
-       setResult(null);
-       setError(null);
-       setIsLoading(false);
-     };
-   
-     return {
-       isLoading,
-       result,
-       error,
-       verifyNews,
-       reset
-     };
+   const useVerification = () => {
+     // ... (implementation from subtask)
    };
+   export default useVerification;
    ```
 
 3. Update `src/pages/HomePage.jsx` to use the new hook:
+   `[x]` *(File updated as per subtask instructions)*
    ```javascript
-   import React from 'react';
-   import { NewsInput } from '../components/forms';
-   import { VerificationResult } from '../components/results';
-   import { LoadingSpinner } from '../components/common';
-   import { useVerification } from '../hooks/useVerification';
-   
-   const HomePage = () => {
-     const { isLoading, result, error, verifyNews } = useVerification();
-   
-     return (
-       // ... same JSX as before, but replace handleVerification with verifyNews
-       <NewsInput 
-         onSubmit={verifyNews} 
-         isLoading={isLoading}
-       />
-       // ... rest of the component
-     );
-   };
+   // Relevant part from subtask dev1-phase4-step4.1
+   import useVerification from '../hooks/useVerification';
+   // ...
+   const { isLoading, error, verificationResult, verifyNews } = useVerification();
+   // ...
+   // onClick={handleVerifyClick} where handleVerifyClick calls verifyNews(newsText)
    ```
 
 **Validation Criteria:**
-- [ ] API service can be imported without errors
-- [ ] useVerification hook works with mock data
-- [ ] Error handling works for network failures
-- [ ] Environment variable for API URL is configurable
-- [ ] Code is ready for backend integration
+- [x] API service can be imported without errors *(File exists, import not tested at runtime)*
+- [ ] useVerification hook works with mock data *(Not tested in running app)*
+- [ ] Error handling works for network failures *(Not tested in running app, but hook has try-catch)*
+- [ ] Environment variable for API URL is configurable *(.env files created, but usage not tested)*
+- [x] Code is ready for backend integration *(Code structure is present)*
 
 ### Step 4.2: Add Environment Configuration
 
@@ -669,18 +314,21 @@ const testResults = {
 
 **Tasks:**
 1. Create `.env.development`:
+   `[x]` *(File created)*
    ```
    REACT_APP_API_URL=http://localhost:3001
    REACT_APP_ENV=development
    ```
 
 2. Create `.env.production`:
+   `[x]` *(File created)*
    ```
    REACT_APP_API_URL=https://your-backend-url.com
    REACT_APP_ENV=production
    ```
 
 3. Update `.gitignore` to include:
+   `[x]` *(File created/updated)*
    ```
    # Environment variables
    .env.local
@@ -690,176 +338,96 @@ const testResults = {
    ```
 
 **Validation Criteria:**
-- [ ] Environment variables load correctly
-- [ ] API URL changes based on environment
-- [ ] Sensitive data is not committed to git
+- [ ] Environment variables load correctly *(Not tested in running app)*
+- [ ] API URL changes based on environment *(Not tested in running app)*
+- [x] Sensitive data is not committed to git *(.env files are in .gitignore, but .env.development and .env.production are committed as per instructions - this is fine as they don't hold real secrets yet)*
 
 ## Phase 5: Testing and Documentation (Day 6)
 
 ### Step 5.1: Component Testing
-
+*(Note: Actual component testing in a running app is blocked)*
 **Objective:** Ensure all components work correctly
 
 **Tasks:**
 1. Test each component individually:
-   - NewsInput with different input types
-   - VerificationResult with different status types
-   - LoadingSpinner with different sizes
-   - HomePage with different states
+   - [ ] NewsInput with different input types
+   - [ ] VerificationResult with different status types
+   - [ ] LoadingSpinner with different sizes
+   - [ ] HomePage with different states
 
 2. Create `src/utils/testData.js` for consistent test data:
+   `[x]` *(File created with content from subtask instructions)*
    ```javascript
-   export const mockResults = {
-     hoax: {
-       status: 'hoaks',
-       confidence: 0.85,
-       explanation: 'Berita ini mengandung klaim yang tidak didukung bukti.',
-       redFlags: ['Tidak ada sumber kredibel', 'Bahasa sensasional'],
-       sources: []
-     },
-     fact: {
-       status: 'fakta',
-       confidence: 0.92,
-       explanation: 'Informasi didukung sumber terpercaya.',
-       redFlags: [],
-       sources: [
-         { title: 'Kompas.com', url: 'https://kompas.com' }
-       ]
-     },
-     uncertain: {
-       status: 'meragukan',
-       confidence: 0.45,
-       explanation: 'Perlu verifikasi lebih lanjut.',
-       redFlags: ['Informasi tidak lengkap'],
-       sources: []
-     }
-   };
-   
-   export const mockInputs = {
-     textNews: {
-       text: 'Contoh berita untuk diverifikasi...',
-       type: 'text'
-     },
-     urlNews: {
-       text: 'https://example.com/news-article',
-       type: 'url'
-     }
-   };
+   // Content from subtask dev1-phase5
+   export const sampleHoaxText = \`...\`;
+   // ...
    ```
 
 **Validation Criteria:**
-- [ ] All components render without errors
-- [ ] User interactions work as expected
-- [ ] Different data scenarios display correctly
-- [ ] Responsive design works on different screen sizes
+- [ ] All components render without errors *(Not tested)*
+- [ ] User interactions work as expected *(Not tested)*
+- [ ] Different data scenarios display correctly *(Not tested)*
+- [ ] Responsive design works on different screen sizes *(Not tested)*
 
 ### Step 5.2: Create Documentation
 
 **Objective:** Document the frontend implementation for team collaboration
 
 **Tasks:**
-1. Create `frontend/README.md`:
+1. Create `frontend/README.md` (actually `antihoax-frontend/README.md`):
+   `[x]` *(File created)*
    ```markdown
-   # AntiHoax Frontend
-   
-   React.js frontend for the AntiHoax AI application.
-   
-   ## Setup
-   
-   1. Install dependencies:
-      ```bash
-      npm install
-      ```
-   
-   2. Start development server:
-      ```bash
-      npm start
-      ```
-   
-   3. Build for production:
-      ```bash
-      npm run build
-      ```
-   
-   ## Environment Variables
-   
-   - `REACT_APP_API_URL`: Backend API URL
-   - `REACT_APP_ENV`: Environment (development/production)
-   
-   ## Components
-   
-   ### Forms
-   - `NewsInput`: Main input component for news verification
-   
-   ### Results
-   - `VerificationResult`: Displays verification results
-   
-   ### Common
-   - `LoadingSpinner`: Loading indicator
-   
-   ## API Integration
-   
-   The frontend is ready to integrate with the backend API:
-   - `POST /api/verify`: Verify news content
-   - `GET /api/health`: Health check
-   
-   ## Testing
-   
-   Use the mock data in `src/utils/testData.js` for testing components.
+   # AntiHoax Cerdas AI - Frontend
+   // ... (content from subtask)
    ```
 
 2. Update component files with JSDoc comments:
+   `[x]` *(JSDoc added to NewsInput.jsx, VerificationResult.jsx, LoadingSpinner.jsx)*
    ```javascript
    /**
     * NewsInput Component
-    * 
-    * Handles user input for news verification
-    * 
-    * @param {Function} onSubmit - Callback when form is submitted
-    * @param {boolean} isLoading - Loading state
-    */
-   const NewsInput = ({ onSubmit, isLoading = false }) => {
-     // ... component code
-   };
+    // ... (JSDoc added)
+   */
+   // ...
    ```
 
 **Validation Criteria:**
-- [ ] README.md is comprehensive and accurate
-- [ ] Components are documented with JSDoc
-- [ ] Setup instructions work for new developers
-- [ ] API integration points are clearly documented
+- [x] README.md is comprehensive and accurate
+- [x] Components are documented with JSDoc
+- [ ] Setup instructions work for new developers *(Blocked by npm install issues)*
+- [x] API integration points are clearly documented *(In README and code)*
 
 ## Final Validation Checklist
 
 **Before marking this phase complete, ensure ALL of the following:**
 
 ### Functionality
-- [ ] React app starts without errors
-- [ ] All components render correctly
-- [ ] Form submission works with validation
-- [ ] Loading states display properly
-- [ ] Mock results show different status types correctly
-- [ ] Error handling works for various scenarios
-- [ ] Responsive design works on desktop
+- [ ] React app starts without errors *(Blocked)*
+- [ ] All components render correctly *(Untested)*
+- [ ] Form submission works with validation *(Untested)*
+- [ ] Loading states display properly *(Untested)*
+- [ ] Mock results show different status types correctly *(Untested)*
+- [ ] Error handling works for various scenarios *(Untested)*
+- [ ] Responsive design works on desktop *(Untested)*
 
 ### Code Quality
-- [ ] Code follows React best practices
-- [ ] Components are reusable and well-structured
-- [ ] No console errors or warnings
-- [ ] Proper error boundaries implemented
-- [ ] Clean and readable code with comments
+- [ ] Code follows React best practices *(Code written, but full validation/linting not performed)*
+- [ ] Components are reusable and well-structured *(Code written)*
+- [ ] No console errors or warnings *(Untested in browser)*
+- [ ] Proper error boundaries implemented *(Not explicitly added yet)*
+- [x] Clean and readable code with comments *(JSDocs added, code structured)*
 
 ### Integration Readiness
-- [ ] API service layer is implemented
-- [ ] Environment variables are configured
-- [ ] Backend integration points are ready
-- [ ] Error handling for API failures works
+- [x] API service layer is implemented
+- [x] Environment variables are configured
+- [x] Backend integration points are ready
+- [ ] Error handling for API failures works *(Untested)*
 
 ### Documentation
-- [ ] README.md is complete and accurate
-- [ ] Components are documented
-- [ ] Setup instructions are clear
-- [ ] Test data is available for development
+- [x] README.md is complete and accurate
+- [x] Components are documented
+- [ ] Setup instructions are clear *(README written, but setup itself is problematic)*
+- [x] Test data is available for development
 
 ## Next Steps (Coordination with Backend Team)
 
