@@ -1,0 +1,55 @@
+# antihoax-backend/docker-compose.yml
+version: '3.8' # Specify docker-compose version
+
+services:
+  # Backend service (this application)
+  antihoax-backend:
+    build:
+      context: . # Use the current directory as context
+      dockerfile: Dockerfile # Specify the Dockerfile name
+      target: release # Build the 'release' stage from the Dockerfile for production
+    container_name: antihoax_backend_app
+    restart: unless-stopped # Restart policy
+    env_file:
+      - .env # Load environment variables from .env file in the same directory
+    ports:
+      - "${PORT:-3001}:${PORT:-3001}" # Map host port to container port, using .env PORT or default 3001
+      # Example for debugging:
+      # - "9229:9229" # Node.js inspect port
+    volumes:
+      # In production, you generally don't mount source code volumes for a compiled/release image.
+      # If you need to persist logs or other data outside the container:
+      - ./logs:/usr/src/app/logs # Mount logs directory if your app writes logs to files
+      # For development, you might mount the source code to enable hot-reloading:
+      # volumes:
+      #  - .:/usr/src/app # Mount current directory to /usr/src/app in container
+      #  - /usr/src/app/node_modules # Anonymous volume to prevent host node_modules from overwriting container's
+    environment:
+      # You can override or add environment variables here if needed
+      - NODE_ENV=production # Ensures production mode
+      # - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY} # Already in .env, but can be explicit
+    networks:
+      - antihoax_network # Use a custom network
+
+  # Add other services if needed (e.g., a database, Redis cache, frontend)
+  # Example for a Redis cache:
+  # redis:
+  #   image: "redis:alpine"
+  #   container_name: antihoax_redis_cache
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - antihoax_network
+
+# Define custom network
+networks:
+  antihoax_network:
+    driver: bridge
+
+# Define named volumes (if any used, e.g., for Redis data)
+# volumes:
+#   redis_data:
+#     driver: local
