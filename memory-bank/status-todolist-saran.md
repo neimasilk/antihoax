@@ -4,16 +4,33 @@ File ini akan diisi oleh AI (Gemini) untuk melacak status proyek, daftar pekerja
 
 ## Status Proyek Saat Ini
 
-**Implementasi MVP - Tahap 1 (Setup Proyek & Antarmuka Dasar Frontend) telah SELESAI.** Lingkungan pengembangan frontend dengan React dan Tailwind CSS telah siap. Komponen UI dasar untuk input berita, tombol verifikasi, dan area hasil telah dibuat, beserta state management awal. Detail penyelesaian dapat dilihat di `progress.md`.
+**Proposal dan Rencana Implementasi MVP telah diperbarui untuk mengintegrasikan DeepSeek API.** File `proposal.md` dan `rencana-implementasi.md` sekarang mencerminkan roadmap 3 minggu yang baru, dengan fokus pada integrasi DeepSeek API, pengembangan fallback, dan pengujian. File `saran.md` telah dihapus karena isinya sudah termuat dalam `proposal.md`.
 
-## To-Do List Prioritas Tinggi
+## To-Do List Prioritas Tinggi (Berdasarkan Roadmap 3 Minggu)
 
-1.  **Implementasi MVP - Tahap 2:** Backend Dasar & API Endpoint Verifikasi - Sesuai `rencana-implementasi.md`.
-2.  **Implementasi MVP - Tahap 3:** Implementasi Logika Verifikasi Sederhana & Database Internal - Sesuai `rencana-implementasi.md`.
-3.  **Implementasi MVP - Tahap 4:** Pengujian & Refinement Awal - Sesuai `rencana-implementasi.md`.
+1.  **Week 1: DeepSeek Integration & Core Functionality**
+    *   Setup React + Tailwind untuk frontend.
+    *   Buat komponen input dan hasil.
+    *   Setup integrasi DeepSeek API.
+    *   Kembangkan prompt yang optimal untuk deteksi hoaks dalam konteks Indonesia.
+    *   Uji berbagai jenis berita Indonesia dengan DeepSeek API.
+    *   Bangun backend/API layer dasar menggunakan Node.js dengan Express untuk menghandle request ke DeepSeek.
+
+2.  **Week 2: Enhancement, Fallback & UI Polish**
+    *   Implementasi dataset dummy (20-30 hoaks, 20-30 fakta) sebagai cross-reference dan fallback.
+    *   Kembangkan sistem rule-based sederhana (deteksi kata kunci, pola) sebagai fallback jika API DeepSeek error atau untuk validasi tambahan.
+    *   Perbaikan UI/UX, termasuk loading states saat API call dan visualisasi hasil yang menarik.
+    *   Implementasi error handling yang robust untuk API calls dan fallback logic.
+
+3.  **Week 3: Testing, Optimization & Deployment Awal**
+    *   A/B testing variasi prompt untuk DeepSeek API.
+    *   Optimasi performa, termasuk caching hasil untuk input yang sama jika memungkinkan.
+    *   User testing dengan 10-20 orang menggunakan kasus nyata.
+    *   Perbaikan berdasarkan feedback.
+    *   Deploy prototipe ke Vercel untuk demo dan pengumpulan feedback lebih lanjut.
+    *   Dokumentasi penggunaan dasar dan arsitektur.
 
 ## Saran "Baby-Step To-Do List" Berikutnya
 
-**Persiapkan dan Implementasikan Baby Step untuk MVP - Tahap 2 (Backend Dasar & API Endpoint Verifikasi):**
-*   **Deskripsi:** Membangun server backend sederhana dengan Node.js dan Express.js. Membuat satu endpoint API (misalnya, `POST /api/verify`) yang menerima teks berita dan mengembalikan hasil verifikasi dummy/statis. Pastikan CORS dikonfigurasi agar frontend dapat mengakses API.
-*   **Langkah Selanjutnya:** Buat file `baby-step.md` baru yang merinci sub-tugas untuk implementasi Tahap 2 ini, berdasarkan `rencana-implementasi.md`.
+**Fokus pada Week 1: DeepSeek Integration & Core Functionality.**
+*   **Langkah Selanjutnya:** Mulai dengan menyiapkan lingkungan pengembangan frontend dan backend, lalu fokus pada integrasi awal DeepSeek API dan pengembangan prompt. Buat file `progress.md` atau `weekly-log.md` untuk mencatat kemajuan harian/mingguan.

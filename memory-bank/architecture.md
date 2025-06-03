@@ -42,9 +42,11 @@ File ini akan digunakan untuk mendokumentasikan keputusan arsitektur, komponen u
 *   **Peran:** Menyimpan data hoaks, laporan pengguna, data pengguna (jika ada), dll.
 
 ### 4. Modul AI/NLP
-*   **Teknologi:** IndoBERT, TensorFlow.js/Python (TensorFlow/PyTorch)
-*   **Peran:** Melakukan analisis teks, klasifikasi hoaks, dan tugas NLP lainnya.
-*   **(Catatan:** Bisa jadi service terpisah atau terintegrasi dalam backend API, tergantung kompleksitas).
+*   **Teknologi Utama:** DeepSeek API (`deepseek-chat` V3, dengan pertimbangan `deepseek-reasoner` R1 untuk masa depan).
+*   **Teknologi Fallback/Pelengkap:** Rule-based detection dan database hoaks statis (JSON).
+*   **Potensi Masa Depan:** Eksplorasi model open-source seperti IndoBERT.
+*   **Peran:** Melakukan analisis teks, klasifikasi hoaks, dan tugas NLP lainnya. Akan diintegrasikan melalui Backend API.
+*   **(Catatan:** Interaksi dengan DeepSeek API akan dikelola oleh Backend API. Fallback logic juga akan berada di Backend API).
 
 ## Diagram Arsitektur
 

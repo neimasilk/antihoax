@@ -56,10 +56,15 @@ Berikut adalah elaborasi fitur utama aplikasi:
 
 - **Frontend**: React.js dengan Tailwind CSS untuk antarmuka yang responsif dan modern.  
 - **Backend**: Node.js dengan Express untuk API, terhubung ke database MongoDB untuk menyimpan data hoaks dan laporan pengguna.  
-- **AI/NLP**: Model seperti BERT atau IndoBERT untuk analisis teks berbahasa Indonesia. Library seperti TensorFlow.js atau Hugging Face Transformers untuk deployment ringan.  
-- **OCR**: Tesseract.js untuk ekstraksi teks dari gambar.  
-- **Database Hoaks**: Integrasi API dengan database eksternal seperti Mafindo atau penyimpanan lokal menggunakan MongoDB.  
-- **Hosting**: Vercel atau AWS untuk skalabilitas dan keandalan.
+- **AI/NLP**: 
+    - **Utama**: DeepSeek API (`deepseek-chat` V3) untuk analisis teks canggih dan deteksi hoaks. Prompt engineering akan menjadi kunci untuk memaksimalkan kemampuannya dalam konteks Indonesia. Model `deepseek-reasoner` (R1) akan dipertimbangkan untuk tugas yang lebih kompleks di masa depan. Latency dan pricing akan dikonfirmasi berdasarkan penggunaan aktual.
+    - **Fallback/Pelengkap**: `fallbackAnalysis(text)` akan murni rule-based (deteksi kata kunci umum hoaks, pola seperti ALL CAPS, banyak tanda seru, clickbait phrases) dan akan berinteraksi dengan dataset dummy untuk cross-check. Ini akan menjadi sistem sederhana yang berfungsi sebagai cadangan jika DeepSeek API gagal atau untuk validasi tambahan.
+    - **Potensi Masa Depan**: Eksplorasi model open-source seperti IndoBERT jika diperlukan untuk tugas spesifik atau sebagai alternatif, serta dukungan bahasa daerah.
+- **OCR**: Tesseract.js (untuk tahap pengembangan selanjutnya, setelah MVP awal, yaitu setelah 3 minggu pertama).
+- **Database Hoaks (MVP Awal)**: File JSON lokal untuk dataset dummy (20-30 hoaks, 20-30 fakta) yang dibuat manual dengan format `{id, title, content, status, category, source}`. Riwayat pencarian pengguna dapat menggunakan localStorage.
+- **Database Hoaks (Skala Penuh)**: Integrasi API dengan database eksternal (Mafindo, Kominfo) atau penggunaan database seperti MongoDB/PostgreSQL untuk data yang lebih besar dan laporan pengguna.
+- **Hosting**: Vercel untuk frontend dan demo prototipe. AWS atau platform serupa untuk backend dan skalabilitas di masa depan.
+- **Backend/API Layer**: Node.js dengan Express untuk API yang berinteraksi dengan DeepSeek API, konsisten dengan teknologi frontend (React) untuk pengembangan full-stack JavaScript.
 
 #### **5\. Potensi Monetisasi**
 
@@ -68,29 +73,38 @@ Berikut adalah elaborasi fitur utama aplikasi:
 - **Hibah**: Pendanaan dari organisasi seperti Google News Initiative, UNESCO, atau pemerintah untuk proyek anti-disinformasi.  
 - **Iklan Non-Intrusif**: Iklan opsional yang relevan (misalnya, dari organisasi pendidikan) untuk pengguna non-premium.
 
-#### **6\. Rencana Pengembangan**
+#### **6\. Rencana Pengembangan (dengan Integrasi DeepSeek API)**
 
-1. **Tahap 1: Prototipe**  
-     
-   - Bangun antarmuka sederhana untuk input teks dan verifikasi berbasis database hoaks statis.  
-   - Implementasi AI dasar menggunakan model NLP open-source.  
-   - Uji coba dengan komunitas kecil (misalnya, mahasiswa atau relawan Mafindo).
+**Roadmap Revisi dengan DeepSeek:**
 
-   
+1.  **Week 1: DeepSeek Integration & Core Functionality**
+    *   Setup React + Tailwind untuk frontend.
+    *   Buat komponen input dan hasil.
+    *   Setup integrasi DeepSeek API.
+    *   Kembangkan prompt yang optimal untuk deteksi hoaks dalam konteks Indonesia. Kriteria optimalitas akan didasarkan pada akurasi deteksi hoaks (HOAKS/FAKTA/PERLU_VERIFIKASI) dan kualitas `reasoning` serta `red_flags` yang dihasilkan oleh DeepSeek API pada dataset uji kecil, dievaluasi secara manual.
+    *   Uji berbagai jenis berita Indonesia dengan DeepSeek API.
+    *   Bangun backend/API layer dasar menggunakan Node.js dengan Express untuk menghandle request ke DeepSeek.
 
-2. **Tahap 2: Fitur Tambahan**  
-     
-   - Tambahkan OCR untuk gambar dan integrasi API database hoaks eksternal.  
-   - Kembangkan fitur pelaporan crowdsourcing dan modul edukasi.  
-   - Uji beta dengan pengguna di beberapa kota besar (Jakarta, Surabaya, Yogyakarta).
+2.  **Week 2: Enhancement, Fallback & UI Polish**
+    *   Implementasi dataset dummy (20-30 hoaks, 20-30 fakta) sebagai cross-reference dan fallback. Dataset akan dibuat manual dengan format `{id, title, content, status, category, source}`.
+    *   Kembangkan sistem rule-based sederhana (deteksi kata kunci, pola) sebagai fallback jika API DeepSeek error atau untuk validasi tambahan. Mekanisme cross-reference akan membandingkan output DeepSeek API (terutama `status` dan `reasoning`) dengan informasi di dataset dummy. Jika ada kecocokan, status dari dataset dummy dapat digunakan untuk menguatkan atau memvalidasi hasil DeepSeek.
+    *   Perbaikan UI/UX, termasuk loading states saat API call dan visualisasi hasil yang menarik.
+    *   Implementasi error handling yang robust untuk API calls dan fallback logic.
 
-   
+3.  **Week 3: Testing, Optimization & Deployment Awal**
+    *   A/B testing variasi prompt untuk DeepSeek API.
+    *   Optimasi performa, termasuk caching hasil untuk input yang sama jika memungkinkan.
+    *   User testing dengan 10-20 orang menggunakan kasus nyata.
+    *   Perbaikan berdasarkan feedback.
+    *   Deploy prototipe ke Vercel untuk demo dan pengumpulan feedback lebih lanjut.
+    *   Dokumentasi penggunaan dasar dan arsitektur.
 
-3. **Tahap 3: Peluncuran dan Skalabilitas**  
-     
-   - Optimasi AI untuk konteks lokal dan bahasa daerah.  
-   - Peluncuran aplikasi di Android, iOS, dan web.  
-   - Kampanye promosi melalui media sosial dan kerjasama dengan influencer literasi digital.
+**Tahap Selanjutnya (Pasca MVP Awal):**
+
+*   **Fitur Tambahan**: Integrasi OCR untuk input gambar dan URL scraping akan ditunda setelah MVP 3 minggu awal. Fitur pelaporan crowdsourcing dan modul edukasi digital akan dikembangkan setelahnya.
+*   **Skalabilitas Database**: Migrasi dari local JSON/localStorage ke database yang lebih scalable seperti PostgreSQL atau MongoDB jika diperlukan.
+*   **Optimasi Lanjutan**: Fine-tuning model atau prompt DeepSeek berdasarkan data penggunaan, eksplorasi model NLP lain jika DeepSeek memiliki batasan, serta eksplorasi dukungan bahasa daerah.
+*   **Peluncuran Lebih Luas**: Pengembangan aplikasi mobile (Android/iOS) dan kampanye promosi.
 
 #### **7\. Contoh Artefak: Kode Frontend Sederhana (React)**
 
@@ -238,4 +252,4 @@ Berikut adalah contoh kode untuk antarmuka input berita dan tampilan hasil verif
 - Uji coba prototipe dengan komunitas lokal untuk mendapatkan umpan balik.  
 - Cari pendanaan melalui hibah atau kerjasama dengan institusi.
 
-Jika Anda ingin fokus pada pengembangan fitur tertentu (misalnya, backend, AI, atau modul edukasi), beri tahu saya, dan saya bisa menyediakan artefak tambahan atau penjelasan lebih rinci\!  
+Jika Anda ingin fokus pada pengembangan fitur tertentu (misalnya, backend, AI, atau modul edukasi), beri tahu saya, dan saya bisa menyediakan artefak tambahan atau penjelasan lebih rinci\!

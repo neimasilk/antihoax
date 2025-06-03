@@ -28,16 +28,15 @@ Aplikasi ini bertujuan untuk memerangi penyebaran hoaks di Indonesia dengan meny
 - **Deskripsi:** Pengguna dapat memasukkan berita dalam bentuk teks, URL, atau gambar (misalnya, tangkapan layar dari WhatsApp atau media sosial).
 - **Detail Teknis:**
     - Input teks langsung.
-    - Input URL (sistem akan melakukan scraping konten jika memungkinkan).
-    - Input gambar dengan fitur OCR (Optical Character Recognition) untuk mengekstrak teks.
-    - Dukungan multibahasa (Bahasa Indonesia, Jawa, Sunda, dll.) dengan deteksi bahasa otomatis.
+    - Input URL dan gambar dengan fitur OCR (Optical Character Recognition) akan ditunda setelah MVP 3 minggu awal.
+    - Dukungan multibahasa (Bahasa Indonesia, Jawa, Sunda, dll.) dengan deteksi bahasa otomatis akan dieksplorasi di tahap selanjutnya.
 
 ### 3.2. Mesin Analisis AI dan Integrasi Database Hoaks
 - **Deskripsi:** Sistem menggunakan AI untuk menganalisis konten berita dan mencocokkannya dengan database hoaks yang ada.
 - **Detail Teknis:**
-    - Model NLP (Natural Language Processing) untuk menganalisis teks, mendeteksi pola hoaks (bahasa sensasional, klaim tidak berdasar).
-    - Integrasi dengan database hoaks terverifikasi (misalnya, data dari Mafindo, Kominfo, atau database internal).
-    - Model AI dilatih dengan dataset hoaks lokal untuk meningkatkan akurasi.
+    - DeepSeek API (`deepseek-chat` V3) akan menjadi model NLP utama untuk menganalisis teks dan mendeteksi pola hoaks. Model `deepseek-reasoner` (R1) akan dipertimbangkan untuk tugas yang lebih kompleks di masa depan.
+    - Fallback akan menggunakan sistem rule-based sederhana (deteksi kata kunci, pola) dan cross-reference dengan dataset dummy lokal.
+    - Integrasi dengan database hoaks terverifikasi (misalnya, data dari Mafindo, Kominfo, atau database internal) akan dilakukan di tahap selanjutnya setelah MVP awal.
 
 ### 3.3. Pelaporan Hoaks oleh Pengguna (Crowdsourcing)
 - **Deskripsi:** Pengguna dapat melaporkan berita yang dicurigai sebagai hoaks untuk diverifikasi lebih lanjut.

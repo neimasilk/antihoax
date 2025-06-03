@@ -1,13 +1,14 @@
 import React from 'react';
 
-function VerifyButton({ onClick }) {
+function VerifyButton({ onClick, disabled }) {
   return (
     <button
       type="button"
-      className="w-full mt-2 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" // Added w-full
+      className={`w-full mt-2 px-4 py-2 font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 ${disabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 text-white'}`}
       onClick={onClick}
+      disabled={disabled}
     >
-      Verifikasi
+      {disabled ? 'Memverifikasi...' : 'Verifikasi'}
     </button>
   );
 }

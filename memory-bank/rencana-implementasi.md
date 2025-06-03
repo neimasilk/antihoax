@@ -13,9 +13,10 @@ Dokumen ini menguraikan rencana implementasi untuk Minimum Viable Product (MVP) 
 1.  **Input Berita Teks untuk Verifikasi:**
     *   Pengguna dapat memasukkan (copy-paste) teks berita ke dalam aplikasi.
     *   Tidak ada dukungan URL atau gambar untuk MVP.
-2.  **Analisis AI Sederhana & Database Hoaks Internal:**
-    *   Analisis teks dasar menggunakan pencocokan kata kunci atau pola sederhana yang sering ditemukan dalam hoaks.
-    *   Menggunakan database hoaks internal (statis atau diisi manual pada tahap awal) untuk mencocokkan berita.
+2.  **Analisis AI dengan DeepSeek API & Database Hoaks Internal:**
+    *   Analisis teks utama menggunakan DeepSeek API (`deepseek-chat` V3) dengan prompt engineering untuk deteksi hoaks.
+    *   Fallback menggunakan sistem rule-based sederhana (deteksi kata kunci, pola) dan cross-reference dengan dataset dummy lokal (file JSON).
+    *   Menggunakan database hoaks internal (file JSON sederhana) untuk mencocokkan berita dan sebagai data dummy.
 3.  **Tampilan Hasil Verifikasi Dasar:**
     *   Menampilkan status: "Terindikasi Hoaks", "Potensi Fakta", atau "Belum Diketahui".
     *   Memberikan penjelasan singkat berdasarkan pencocokan database atau analisis pola.
@@ -39,36 +40,32 @@ Dokumen ini menguraikan rencana implementasi untuk Minimum Viable Product (MVP) 
     *   Area hasil siap menampilkan informasi (meskipun belum ada logika verifikasi).
     *   Tampilan responsif minimal pada layar desktop.
 
-### Tahap 2: Backend Dasar & API Endpoint Verifikasi
+### Tahap 2: Integrasi DeepSeek API & Backend
 
-*   **Deskripsi:** Membangun server backend sederhana dengan satu endpoint API untuk menerima teks berita dan mengembalikan hasil verifikasi dummy/statis.
+*   **Deskripsi:** Mengintegrasikan DeepSeek API ke backend dan membangun API endpoint untuk verifikasi berita.
 *   **Detail Tugas:**
-    1.  Inisialisasi proyek Node.js dengan Express.js.
-    2.  Buat satu API endpoint (misalnya, `POST /api/verify`).
-    3.  Endpoint menerima payload JSON berisi teks berita.
-    4.  Untuk MVP, endpoint ini akan mengembalikan respons statis/dummy (misalnya, selalu mengembalikan "Belum Diketahui" atau hasil acak sederhana).
+    1.  Inisialisasi proyek Node.js dengan Express.js untuk backend.
+    2.  Buat API endpoint (`POST /api/verify`) yang menerima teks berita.
+    3.  Implementasikan logika untuk memanggil DeepSeek API dengan prompt yang optimal untuk deteksi hoaks.
+    4.  Tangani respons dari DeepSeek API dan format hasilnya.
     5.  Pastikan CORS dikonfigurasi agar frontend dapat mengakses API.
 *   **Kriteria Keberhasilan/Validasi:**
     *   Frontend dapat mengirim permintaan ke endpoint `/api/verify` dengan teks berita.
-    *   Backend menerima permintaan dan mengembalikan respons JSON yang valid (statis).
-    *   Frontend dapat menampilkan respons dari backend di area hasil.
+    *   Backend berhasil memanggil DeepSeek API dan mengembalikan respons yang relevan.
+    *   Frontend dapat menampilkan hasil verifikasi dari DeepSeek API.
 
-### Tahap 3: Implementasi Logika Verifikasi Sederhana & Database Internal
+### Tahap 3: Implementasi Fallback & Dataset Dummy
 
-*   **Deskripsi:** Mengimplementasikan logika verifikasi dasar di backend dan menghubungkannya dengan database hoaks internal (bisa berupa array objek JavaScript atau file JSON sederhana pada tahap ini).
+*   **Deskripsi:** Mengembangkan sistem fallback berbasis aturan dan mengintegrasikan dataset dummy untuk cross-reference.
 *   **Detail Tugas:**
-    1.  Buat struktur data sederhana untuk database hoaks internal (misalnya, array objek JavaScript yang berisi `keyword` dan `status`).
-        *   Contoh: `[{ keyword: "undian berhadiah bank X", status: "Terindikasi Hoaks", explanation: "Bank X tidak mengadakan undian ini." }]`
-    2.  Modifikasi endpoint `/api/verify` di backend:
-        *   Menerima teks berita dari request.
-        *   Melakukan pencocokan sederhana teks berita dengan `keyword` di database internal.
-        *   Jika ada kecocokan, kembalikan `status` dan `explanation` yang sesuai.
-        *   Jika tidak ada kecocokan, kembalikan status "Belum Diketahui" atau "Potensi Fakta" (dengan logika sederhana, misal berdasarkan panjang teks atau tidak adanya kata kunci negatif).
-    3.  Integrasikan logika ini sehingga frontend menampilkan hasil verifikasi yang lebih dinamis berdasarkan database internal.
+    1.  Buat dataset dummy hoaks dan fakta dalam format JSON (20-30 entri masing-masing).
+    2.  Implementasikan fungsi `fallbackAnalysis(text)` di backend yang menggunakan rule-based detection (kata kunci, pola) dan mencocokkan dengan dataset dummy.
+    3.  Modifikasi endpoint `/api/verify` untuk menggunakan `fallbackAnalysis` jika DeepSeek API gagal atau sebagai validasi tambahan.
+    4.  Integrasikan logika cross-reference antara output DeepSeek API dan dataset dummy.
 *   **Kriteria Keberhasilan/Validasi:**
-    *   Jika teks input mengandung keyword dari database hoaks internal, hasil verifikasi yang sesuai ditampilkan.
-    *   Jika teks input tidak cocok, status default (misalnya, "Belum Diketahui") ditampilkan.
-    *   Aplikasi dapat menangani beberapa contoh kasus hoaks sederhana yang ada di database internal.
+    *   Sistem fallback berfungsi saat DeepSeek API tidak tersedia atau untuk validasi.
+    *   Dataset dummy dapat diakses dan digunakan untuk cross-reference.
+    *   Hasil verifikasi mencerminkan kombinasi analisis DeepSeek dan fallback.
 
 ### Tahap 4: Pengujian & Refinement Awal
 
@@ -87,14 +84,14 @@ Dokumen ini menguraikan rencana implementasi untuk Minimum Viable Product (MVP) 
 
 *   **Frontend:** React.js, Tailwind CSS
 *   **Backend:** Node.js, Express.js
-*   **Database (Internal MVP):** Array JavaScript / File JSON sederhana di backend.
+*   **Database (Internal MVP):** File JSON sederhana di backend untuk dataset dummy.
 *   **Version Control:** Git, GitHub
 
 ## Rencana Selanjutnya (Pasca-MVP)
 
 Setelah MVP berhasil dan feedback terkumpul, pengembangan akan dilanjutkan dengan:
 
-1.  Integrasi model NLP yang lebih canggih (IndoBERT).
+1.  Eksplorasi model NLP lain (misalnya, IndoBERT) dan dukungan bahasa daerah.
 2.  Pengembangan database hoaks yang lebih robust (MongoDB).
 3.  Implementasi fitur input URL dan OCR untuk gambar.
 4.  Fitur pelaporan hoaks oleh pengguna (crowdsourcing).

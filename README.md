@@ -4,30 +4,41 @@ Proyek ini bertujuan untuk membangun aplikasi AntiHoax Cerdas berbasis AI yang d
 
 ## Deskripsi Singkat
 
-Aplikasi ini akan memungkinkan pengguna untuk memasukkan berita (teks, URL, atau gambar) dan mendapatkan analisis apakah berita tersebut terindikasi hoaks atau fakta. Sistem akan menggunakan teknologi Natural Language Processing (NLP) dan Machine Learning (ML) untuk menganalisis konten, serta terintegrasi dengan database hoaks yang relevan dengan konteks Indonesia. Selain itu, aplikasi akan menyediakan modul pembelajaran interaktif untuk meningkatkan literasi digital pengguna.
+Aplikasi ini akan memungkinkan pengguna untuk memasukkan berita dalam format teks dan mendapatkan analisis apakah berita tersebut terindikasi hoaks atau fakta. Sistem akan menggunakan **DeepSeek API** sebagai teknologi Natural Language Processing (NLP) utama, didukung oleh mekanisme fallback berbasis aturan dan cross-referencing dengan dataset dummy lokal. Fitur input URL dan gambar, serta modul pembelajaran interaktif, direncanakan untuk pengembangan setelah MVP awal.
 
 ## Tujuan Proyek
 
-*   Menyediakan alat verifikasi berita yang mudah diakses dan akurat untuk masyarakat Indonesia.
+*   Menyediakan alat verifikasi berita berbasis teks yang mudah diakses dan akurat untuk masyarakat Indonesia sebagai MVP.
 *   Membantu mengurangi penyebaran hoaks dan disinformasi.
-*   Meningkatkan kesadaran dan kemampuan masyarakat dalam mengenali hoaks.
+*   Meningkatkan kesadaran dan kemampuan masyarakat dalam mengenali hoaks (fitur edukasi akan dikembangkan pasca-MVP).
 
-## Fitur Utama (Direncakanan)
+## Fitur Utama (MVP & Rencana Pengembangan)
 
-*   Verifikasi berita melalui input teks, URL, dan gambar (dengan OCR).
-*   Analisis AI untuk deteksi pola hoaks.
-*   Integrasi dengan database hoaks lokal dan nasional.
+**MVP (Fokus 3 Minggu Awal):**
+*   Verifikasi berita melalui input **teks**.
+*   Analisis AI menggunakan **DeepSeek API (`deepseek-chat` V3)** dengan prompt yang dioptimalkan.
+*   Implementasi **sistem fallback berbasis aturan** (`fallbackAnalysis(text)`).
+*   **Cross-reference dengan dataset dummy lokal** (JSON) berisi contoh hoaks dan fakta.
+*   Tampilan hasil verifikasi yang jelas (misalnya, Terindikasi Hoaks, Terindikasi Fakta, Perlu Analisis Lebih Lanjut) beserta penjelasan dari API atau sistem fallback.
+
+**Rencana Pengembangan Selanjutnya (Setelah MVP):**
+*   Input berita melalui URL (dengan web scraping).
+*   Input berita melalui gambar (dengan OCR).
+*   Integrasi dengan database hoaks eksternal (jika tersedia API).
 *   Fitur pelaporan hoaks oleh pengguna (crowdsourcing).
-*   Tampilan hasil verifikasi yang jelas (Hoaks, Fakta, Meragukan) beserta penjelasan.
 *   Modul pembelajaran literasi digital interaktif.
+*   Dukungan bahasa daerah (jangka panjang).
 
-## Tumpukan Teknologi (Direncakanan)
+## Tumpukan Teknologi (MVP & Rencana Pengembangan)
 
 *   **Frontend:** React.js, Tailwind CSS
-*   **Backend:** Node.js, Express.js
-*   **Database:** MongoDB
-*   **AI/NLP:** IndoBERT, TensorFlow.js/Python (TensorFlow/PyTorch)
-*   **OCR:** Tesseract.js
+*   **Backend API Layer:** Node.js, Express.js (untuk mengelola request ke DeepSeek API dan logika fallback)
+*   **Database (MVP):** Dataset dummy lokal dalam format JSON.
+*   **Database (Masa Depan):** MongoDB (untuk data pengguna, laporan, dll.)
+*   **AI/NLP (MVP):**
+    *   **Utama:** DeepSeek API (Model `deepseek-chat` V3, dengan pertimbangan `deepseek-reasoner` R1 di masa depan).
+    *   **Fallback:** Sistem berbasis aturan dan cross-reference dataset dummy.
+*   **OCR (Ditunda):** Tesseract.js atau layanan cloud (akan diimplementasikan setelah MVP).
 
 ## Struktur Proyek (Awal)
 
