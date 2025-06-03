@@ -1,0 +1,30 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Proyek ini bertujuan untuk membangun aplikasi AntiHoax Cerdas berbasis AI yang dapat membantu masyarakat Indonesia memverifikasi berita dan meningkatkan literasi digital.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:integration": "jest tests/integration.test.js",
+    "test:performance": "jest tests/performance.test.js",
+    "test:e2e": "node scripts/e2e-test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neimasilk/antihoax.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neimasilk/antihoax/issues"
+  },
+  "homepage": "https://github.com/neimasilk/antihoax#readme",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.1.1"
+  },
+  "dependencies": {
+    "axios": "^1.9.0"
+  }
+}

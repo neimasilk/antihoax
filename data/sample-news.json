@@ -1,0 +1,36 @@
+{
+  "hoaks": [
+    {
+      "id": "h001",
+      "text": "BREAKING!!! Vaksin COVID-19 mengandung chip 5G yang dapat mengontrol pikiran manusia!!! Jangan percaya pemerintah!!! SHARE SEBELUM DIHAPUS!!!",
+      "expectedStatus": "hoaks",
+      "category": "kesehatan",
+      "indicators": ["sensational language", "conspiracy theory", "urgent sharing"]
+    },
+    {
+      "id": "h002",
+      "text": "Air putih yang diminum pagi hari dapat menyembuhkan kanker dalam 3 hari! Rahasia yang disembunyikan dokter!",
+      "expectedStatus": "hoaks",
+      "category": "kesehatan",
+      "indicators": ["miracle cure", "hidden secret", "unrealistic claims"]
+    }
+  ],
+  "fakta": [
+    {
+      "id": "f001",
+      "text": "Menurut penelitian dari Universitas Indonesia, tingkat literasi digital di Indonesia meningkat 15% pada tahun 2023 berdasarkan survei terhadap 10,000 responden.",
+      "expectedStatus": "fakta",
+      "category": "pendidikan",
+      "indicators": ["research reference", "credible source", "specific data"]
+    }
+  ],
+  "perlu_verifikasi": [
+    {
+      "id": "v001",
+      "text": "Pemerintah akan menaikkan harga BBM bulan depan menurut sumber internal.",
+      "expectedStatus": "perlu_verifikasi",
+      "category": "ekonomi",
+      "indicators": ["unverified source", "future prediction", "lacks official confirmation"]
+    }
+  ]
+}
