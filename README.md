@@ -1,105 +1,68 @@
-# AntiHoax Cerdas AI
+# Proyek AntiHoax Cerdas AI
 
-## Overview
-**AntiHoax Cerdas AI** is a web-based application designed to combat misinformation in Indonesia by providing tools to verify the authenticity of news articles. The app leverages AI-based text analysis, a verified hoax database, crowdsourced reporting, and an interactive digital literacy module to empower users to distinguish between facts and hoaxes. It is tailored for the Indonesian context, supporting local languages and addressing region-specific misinformation challenges.
+Proyek ini bertujuan untuk membangun aplikasi AntiHoax Cerdas berbasis AI yang dapat membantu masyarakat Indonesia memverifikasi berita dan meningkatkan literasi digital.
 
-## Features
-- **News Verification**: Users can input news text, URLs, or images for verification using AI and a hoax database.
-- **Crowdsourced Reporting**: Users can report suspected hoaxes, contributing to a community-driven verification process.
-- **Clear Verification Results**: Displays results with a trust score and explanations (e.g., "Hoax," "Fact," or "Needs Further Review").
-- **Digital Literacy Module**: Interactive quizzes and educational content to improve users' ability to identify misinformation.
-- **Multi-language Support**: Supports Bahasa Indonesia and regional languages (e.g., Javanese, Sundanese) with automatic language detection.
+## Deskripsi Singkat
 
-## Tech Stack
-- **Frontend**: React.js with Vite for fast development and Tailwind CSS for styling.
-- **Backend**: (Planned) Node.js with Express for API, MongoDB for storing hoax data and user reports.
-- **AI/NLP**: (Planned) IndoBERT or similar models for text analysis, Tesseract.js for OCR (image text extraction).
-- **Deployment**: Vercel or AWS for scalable hosting.
+Aplikasi ini akan memungkinkan pengguna untuk memasukkan berita (teks, URL, atau gambar) dan mendapatkan analisis apakah berita tersebut terindikasi hoaks atau fakta. Sistem akan menggunakan teknologi Natural Language Processing (NLP) dan Machine Learning (ML) untuk menganalisis konten, serta terintegrasi dengan database hoaks yang relevan dengan konteks Indonesia. Selain itu, aplikasi akan menyediakan modul pembelajaran interaktif untuk meningkatkan literasi digital pengguna.
 
-## Prerequisites
-- Node.js (v16 or higher)
-- npm (v8 or higher)
-- Git
+## Tujuan Proyek
 
-## Installation
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/your-username/antihoax-cerdas-ai.git
-   cd antihoax-cerdas-ai
-   ```
+*   Menyediakan alat verifikasi berita yang mudah diakses dan akurat untuk masyarakat Indonesia.
+*   Membantu mengurangi penyebaran hoaks dan disinformasi.
+*   Meningkatkan kesadaran dan kemampuan masyarakat dalam mengenali hoaks.
 
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
+## Fitur Utama (Direncakanan)
 
-3. **Set Up Tailwind CSS**:
-   Ensure Tailwind CSS is configured by initializing it:
-   ```bash
-   npx tailwindcss init -p
-   ```
+*   Verifikasi berita melalui input teks, URL, dan gambar (dengan OCR).
+*   Analisis AI untuk deteksi pola hoaks.
+*   Integrasi dengan database hoaks lokal dan nasional.
+*   Fitur pelaporan hoaks oleh pengguna (crowdsourcing).
+*   Tampilan hasil verifikasi yang jelas (Hoaks, Fakta, Meragukan) beserta penjelasan.
+*   Modul pembelajaran literasi digital interaktif.
 
-4. **Run the Development Server**:
-   ```bash
-   npm run dev
-   ```
-   The app will be available at `http://localhost:5173`.
+## Tumpukan Teknologi (Direncakanan)
 
-## Usage
-1. **Verify News**:
-   - Navigate to the homepage.
-   - Enter news text or a URL in the provided textarea.
-   - Click "Verifikasi Berita" to see the verification result, including a trust score and explanation.
+*   **Frontend:** React.js, Tailwind CSS
+*   **Backend:** Node.js, Express.js
+*   **Database:** MongoDB
+*   **AI/NLP:** IndoBERT, TensorFlow.js/Python (TensorFlow/PyTorch)
+*   **OCR:** Tesseract.js
 
-2. **Report a Hoax**:
-   - (Planned) Use the "Laporkan Hoaks" button to submit suspected hoaxes for community or moderator review.
+## Struktur Proyek (Awal)
 
-3. **Learn Digital Literacy**:
-   - Access the "Pelajari Literasi Digital" link for interactive quizzes and educational content.
-
-## Project Structure
 ```
-antihoax-cerdas-ai/
-├── public/
-│   └── index.html         # Main HTML file
-├── src/
-│   ├── App.jsx            # Main React component
-│   ├── main.jsx           # Entry point for React
-│   ├── index.css          # Tailwind CSS styles
-├── tailwind.config.js     # Tailwind CSS configuration
-├── postcss.config.js      # PostCSS configuration
-├── package.json           # Project dependencies and scripts
-└── README.md              # This file
+antihoax/
+├── memory-bank/                # Berisi semua dokumen perencanaan & konteks AI
+│   ├── proposal.md             # Proposal awal proyek
+│   ├── vibe-coding.md          # Panduan metodologi Vibe Coding
+│   ├── dokumen-desain-produk.md # PDD/GDD
+│   ├── tumpukan-teknologi.md   # Detail tech stack
+│   ├── rencana-implementasi.md # Rencana implementasi MVP
+│   ├── status-todolist-saran.md # Status, to-do, dan saran dari AI perencana
+│   ├── baby-step.md            # Instruksi detail untuk AI koding per iterasi
+│   ├── architecture.md         # Dokumentasi arsitektur sistem
+│   └── progress.md             # Laporan progres implementasi
+├── README.md                   # File ini
+└── (folder kode sumber akan dibuat di sini, misal: src/, client/, server/)
 ```
 
-## Planned Features
-- Backend API for integrating with a hoax database (e.g., Mafindo).
-- OCR support for extracting text from images using Tesseract.js.
-- Enhanced AI verification with IndoBERT for local language processing.
-- Gamification for crowdsourced reporting (e.g., badges for active users).
-- Mobile app versions for Android and iOS.
+## Cara Menjalankan Proyek (Akan Diperbarui)
 
-## Contributing
-We welcome contributions! To contribute:
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature`).
-3. Make your changes and commit (`git commit -m "Add your feature"`).
-4. Push to the branch (`git push origin feature/your-feature`).
-5. Open a pull request.
+Instruksi untuk menjalankan proyek secara lokal akan ditambahkan di sini setelah implementasi awal selesai.
 
-Please ensure your code follows the project's coding standards and includes tests where applicable.
+Umumnya akan melibatkan langkah-langkah seperti:
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+1.  Clone repositori.
+2.  Install dependensi untuk frontend dan backend (misalnya, menggunakan `npm install`).
+3.  Konfigurasi environment variables (jika ada).
+4.  Jalankan server backend.
+5.  Jalankan aplikasi frontend.
 
-## Contact
-For questions or feedback, reach out via:
-- Email: your-email@example.com
-- GitHub Issues: [Create an Issue](https://github.com/your-username/antihoax-cerdas-ai/issues)
+## Panduan Vibe Coding
 
-## Acknowledgments
-- Inspired by the need to combat misinformation in Indonesia.
-- Thanks to open-source communities like React, Tailwind CSS, and Vite.
-- Future integrations planned with Mafindo and Kominfo for verified hoax data.
+Proyek ini dikembangkan menggunakan metodologi "Vibe Coding" yang menekankan perencanaan terstruktur, kolaborasi manusia-AI yang jelas, dan iterasi cepat. Detail panduan dapat ditemukan di <mcfile path="c:\Users\neima\Documents\antihoax\memory-bank\vibe-coding.md" name="vibe-coding.md"></mcfile>.
 
-*Last Updated: June 3, 2025*
+## Kontribusi
+
+Informasi mengenai cara berkontribusi akan ditambahkan di masa mendatang.
