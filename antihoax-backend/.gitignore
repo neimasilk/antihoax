@@ -1,0 +1,36 @@
+# Node.js and npm specific
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.test # If you use a specific .env for tests
+
+# Logs
+logs/
+*.log
+
+# Build artifacts
+dist/
+build/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# Docker (optional, if you want to ignore local docker-compose overrides etc.)
+# docker-compose.override.yml
+
+# Editor-specific (examples)
+.vscode/
+.idea/
+
+# Other
+# Add any other files or directories that should not be committed.
