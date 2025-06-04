@@ -62,6 +62,7 @@ class VerificationService {
     return {
       provider: 'deepseek',
       is_hoax: deepseekResult.is_hoax,
+      status: deepseekResult.is_hoax ? 'hoaks' : 'fakta',
       confidence: deepseekResult.confidence_score,
       summary: deepseekResult.analysis_summary,
       indicators: deepseekResult.key_indicators,
@@ -80,6 +81,7 @@ class VerificationService {
         return {
           provider: 'fallback',
           is_hoax: fallbackResult.status === 'hoax',
+          status: fallbackResult.status === 'hoax' ? 'hoaks' : (fallbackResult.status === 'fact' ? 'fakta' : 'perlu_verifikasi'),
           confidence: fallbackResult.confidence,
           summary: fallbackResult.explanation,
           indicators: fallbackResult.redFlags.map(flag => flag.indicator || flag),
@@ -98,6 +100,7 @@ class VerificationService {
     return {
       provider: 'fallback',
       is_hoax: isHoax,
+      status: isHoax === true ? 'hoaks' : (isHoax === false ? 'fakta' : 'perlu_verifikasi'),
       confidence: 0.0,
       summary: message,
       indicators: [message],

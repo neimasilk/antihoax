@@ -1,6 +1,6 @@
 const axios = require('axios');
 // Corrected path for datasetService assuming scripts directory is at root
-const datasetService = require('../src/services/datasetService');
+const datasetService = require('../antihoax-backend/src/services/datasetService');
 
 async function runE2ETests() {
   console.log('🧪 Starting E2E tests...');

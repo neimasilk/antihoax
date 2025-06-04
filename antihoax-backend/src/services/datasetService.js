@@ -3,7 +3,7 @@ const path = require('path');
 
 class DatasetService {
   constructor() {
-    this.dataPath = path.join(__dirname, '../../data/sample-news.json');
+    this.dataPath = path.join(__dirname, '../../../data/sample-news.json');
     this.dataset = null;
     this.loadDataset();
   }
